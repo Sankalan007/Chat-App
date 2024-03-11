@@ -1,0 +1,99 @@
+@import "@fortawesome/fontawesome-free/css/all.css";
+@import "@fortawesome/fontawesome-free/css/brands.css";
+@import "@fortawesome/fontawesome-free/css/regular.css";
+@import "@fortawesome/fontawesome-free/css/solid.css";
+
+:root {
+  --channel-bar-background-color: #c9c7c7;
+  --sidebar-background-color: #e8e6e6;
+  --content-background-color: #e2e1e1;
+  --header-items-color: rgb(111, 111, 111);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.m-10{
+  margin: 10px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+.mr-10 {
+  margin-right: 10px;
+}
+.mr-20 {
+  margin-right: 20px;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-grow{
+  flex-grow: 1;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.font-bold{
+  font-weight: bold;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(155, 154, 154);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 4px;
+  background-color: #f1f1f1;
+}
+
+button,
+input[type="submit"],
+input[type="reset"] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}

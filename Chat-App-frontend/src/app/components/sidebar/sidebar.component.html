@@ -1,0 +1,151 @@
+<div class="main-container">
+  <div class="main-container-wrapper">
+    <div class="channel-info-container">
+      <span>
+        <div class="channel-name">
+          <span>MD</span>
+        </div>
+        Meghdoot</span
+      >
+      <span><i class="fa-solid fa-ellipsis-vertical"></i></span>
+    </div>
+    <div class="sidebar-content-container">
+      <div class="sidebar-content-container-wrapper">
+        <div class="type-container">
+          <span style="font-size: 14px">Chat</span
+          ><span style="font-size: 12px"
+            ><i class="fa fa-chevron-right"></i
+          ></span>
+        </div>
+        <div class="topics-container">
+          <div class="topics-container-wrapper">
+            <div style="height: 6%; overflow-y: auto; cursor: pointer">
+              <span
+                ><span style="margin-right: 16px">&#64;</span>
+                <span>Mentioned</span></span
+              >
+            </div>
+            <div style="height: 6%; overflow-y: auto; cursor: pointer">
+              <span
+                ><span style="margin-right: 16px"
+                  ><i class="fa-solid fa-comments"></i
+                ></span>
+                <span>Threads</span></span
+              >
+            </div>
+            <div style="font-weight: bold; min-height: 8%; overflow-y: auto;">
+              <span class="cursor-pointer"
+                ><span class="mr-10"><i class="fa-solid fa-star"></i></span>
+                <span class="mr-10">Starred</span
+                ><span><i class="fa fa-chevron-down"></i></span
+              ></span>
+            </div>
+            <div class="group-container">
+              <div class="group-header-container">
+                <span
+                  ><span style="margin-right: 10px"
+                    ><i class="fa-solid fa-users"></i
+                  ></span>
+                  <span class="mr-10">Groups</span
+                  ><span><i class="fa fa-chevron-right"></i></span
+                ></span>
+              </div>
+              <div class="group-name-container">
+                <button class="pinned-group-info-container">
+                  <div class="pinned-group-info-wrapper">
+                    <span>general</span>
+                    <span><i class="fa-solid fa-thumbtack"></i></span>
+                  </div>
+                </button>
+                <button class="unpinned-group-info-container">
+                  <div class="unpinned-group-info-wrapper">
+                    <span>Development</span>
+                    <span
+                      style="
+                        border-radius: 5px;
+                        background-color: rgb(0, 128, 49);
+                        color: white;
+                        padding: 3px;
+                      "
+                      >Active</span
+                    >
+                  </div>
+                </button>
+                <button class="unpinned-group-info-container">
+                  <div class="unpinned-group-info-wrapper">
+                    <span>Business</span>
+                    <span
+                      style="
+                        border-radius: 50%;
+                        background-color: black;
+                        color: white;
+                        padding: 3px;
+                      "
+                      >10+</span
+                    >
+                  </div>
+                </button>
+                <button class="unpinned-group-info-container">
+                  <div class="unpinned-group-info-wrapper">
+                    <span>Design</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+            <div class="broadcast-container">
+              <div style="margin-bottom: 8px; font-weight: bold; cursor: pointer">
+                <span
+                  ><span class="mr-10"><i class="fa-solid fa-users"></i></span>
+                  <span class="mr-10">Broadcast Channel</span
+                  ><span><i class="fa fa-chevron-right"></i></span
+                ></span>
+              </div>
+              <button class="broadcast-content-container">
+                <div class="broadcast-content-wrapper">
+                  <span>broadcast</span>
+                  <span><i class="fa-solid fa-thumbtack"></i></span>
+                </div>
+              </button>
+            </div>
+            <div class="dm-container">
+              <div style="margin-bottom: 8px; font-weight: bold">
+                <span class="cursor-pointer"
+                  ><span class="mr-10"
+                    ><i class="fa-regular fa-message"></i
+                  ></span>
+                  <span class="mr-10">Direct Messages</span
+                  ><span><i class="fa fa-chevron-right"></i></span
+                ></span>
+              </div>
+              <div class="dm-content-container">
+                @for(user of otherUsers; track user){
+                <button class="dm-info" (click)="updateCurrentRoomId(user.userId)">
+                  <div class="dm-user-info">
+                    <div class="circle">
+                      <img
+                        style="margin-right: 10px"
+                        height="35"
+                        width="35"
+                        src="https://source.unsplash.com/random/200x200?avatar"
+                        alt=""
+                      />
+                    </div>
+                    <div>{{ user.username }}</div>
+                  </div>
+                  <span>
+                    @if(user.onlineStatus == true){
+                    <div class="status-online"></div>
+                    } @else {
+                    <div class="status-offline"></div>
+                    }
+                  </span>
+                </button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

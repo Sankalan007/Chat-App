@@ -1,0 +1,106 @@
+<div
+  style="
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+  "
+>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      width: 5%;
+    "
+  >
+    <img src="../../../assets/argusoft-logo.ico" alt="" />
+  </div>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 20%;
+    "
+  >
+    <div style="margin-left: 10px; font-weight: bold; font-size: 18px">
+      <span style="margin-right: 8px">Argusoft India Ltd.</span
+      ><i class="fa fa-chevron-down"></i>
+    </div>
+    <div style="margin-right: 10px; z-index: 10; font-size: 18px">
+      <i class="fa-regular fa-message"></i>
+    </div>
+  </div>
+  <div
+    style="
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
+      width: 5%;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 20px;
+      "
+    >
+      <div class="search-bar">
+        <input type="text" placeholder="Search" />
+      </div>
+
+      <div style="margin-right: 15px">
+        <span style="color: var(--header-items-color)"
+          ><i class="fa-solid fa-circle-question"></i
+        ></span>
+      </div>
+      <div style="margin-right: 15px">
+        <span style="color: var(--header-items-color)"
+          ><i class="fa-solid fa-bell"></i
+        ></span>
+      </div>
+      <div style="margin-right: 15px">
+        <span style="color: var(--header-items-color)"
+          ><i class="fa fa-gear"></i
+        ></span>
+      </div>
+      <div style="margin-right: 15px">
+        <input type="checkbox" class="checkbox" id="checkbox" />
+        <label for="checkbox" class="checkbox-label">
+          <i class="fa-regular fa-sun"></i>
+          <i class="fa-regular fa-moon"></i>
+          <span class="ball"></span>
+        </label>
+      </div>
+      <div class="dropDown">
+        <button
+          (click)="dropdownToggle()"
+          class="dropbtn"
+          style="display: flex; flex-direction: row; align-items: center; color: black"
+        >
+          <div (click)="dropdownToggle()" style="margin-right: 15px" class="circle">
+            <img
+            (click)="dropdownToggle()"
+              height="35"
+              width="35"
+              src="https://source.unsplash.com/random/200x200?avatar"
+              alt="Avatar"
+            />
+          </div>
+          <div (click)="dropdownToggle()" style="margin-right: 20px">
+            <span>{{currentUser?.username}}</span>
+          </div>
+        </button>
+        <div id="myDropdown" class="dropdown-content">
+          <button (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+#draggable {
+  width: 3px;
+  cursor: ew-resize;
+  background-color: #ccc;
+}
+#draggable:hover{
+    background-color: rgb(57, 57, 173);
+}
+
+#sidebar-container,
+#router-outlet-container {
+  overflow: hidden;
+}

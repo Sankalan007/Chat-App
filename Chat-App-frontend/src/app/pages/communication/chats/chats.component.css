@@ -1,0 +1,244 @@
+.circle {
+  line-height: 0;
+  display: inline-block;
+  margin: 5px;
+  border: 1px solid rgba(200, 200, 200, 0.4);
+  border-radius: 50%;
+  transition: linear 0.25s;
+  height: 35px;
+  width: 35px;
+}
+.circle img {
+  border-radius: 50%;
+}
+.circle:hover {
+  transition: ease-out 0.2s;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-transition: ease-out 0.2s;
+}
+
+.main-container {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--content-background-color);
+  border-radius: 10px;
+}
+
+.main-container-wrapper {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.chat-main-container {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-main-container-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header-container {
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+  -webkit-box-shadow: 0px 1px 3px 0px rgba(41, 41, 41, 0.25);
+  -moz-box-shadow: 0px 1px 3px 0px rgba(41, 41, 41, 0.25);
+  box-shadow: 0px 1px 3px 0px rgba(41, 41, 41, 0.25);
+}
+
+.chat-header-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+  background-color: white;
+  border-radius: 10px 10px 0 0;
+}
+
+.chat-header-actions {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 4px;
+}
+
+.chat-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.chat-description {
+  color: #808080;
+}
+
+.chat-message-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.left-message-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+.right-message-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+
+.avatar-container {
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.message-detail-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-info-container {
+  margin-bottom: 4px;
+}
+
+.message-sender {
+  font-size: 12px;
+  margin-right: 6px;
+}
+.message-time {
+  font-size: 10px;
+  color: #808080;
+}
+.message-text {
+  background-color: var(--content-background-color);
+  padding: 5px;
+  border-radius: 10px;
+  word-break: break-word;
+}
+
+.chat-input-container {
+  height: 15%;
+  background-color: white;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin: 20px;
+}
+
+.file-input-container {
+  display: inline-block;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #eeeeee;
+  border-radius: 50px;
+  position: relative;
+  margin: 0 15px;
+}
+
+.message-text-input-container {
+  margin-right: 15px;
+  flex-grow: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.message-text-input {
+  width: 100%;
+  border: none;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.send-button {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.chat-action-button {
+  display: inline-block;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #eeeeee;
+  border-radius: 50px;
+  position: relative;
+  margin-right: 15px;
+}
+
+.actions-container {
+  height: 100%;
+  width: 7%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.action-button {
+  display: inline-block;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #eeeeee;
+  border-radius: 50px;
+  position: relative;
+  margin-top: 10px;
+}
+
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  font-family: "Montserrat", sans-serif;
+}
+
+input {
+  font-family: "Montserrat", sans-serif;
+}

@@ -1,0 +1,42 @@
+@if (isNoNavRoute()) {
+<router-outlet></router-outlet>
+} @else {
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    transition: all 0.5s ease-out;
+  "
+>
+  <div style="height: 8%; width: 100%">
+    <app-header></app-header>
+  </div>
+  <div
+    id="draggable-container"
+    style="
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
+      flex-grow: 1;
+    "
+  >
+    <div style="width: 5%; min-width: 80px" id="channel-bar">
+      <app-channel-bar></app-channel-bar>
+    </div>
+    <div style="width: 20%; min-width: 225px" id="sidebar-container">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div id="draggable"></div>
+    <div
+      style="flex-grow: 1; background-color: var(--content-background-color)"
+      id="router-outlet-container"
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+}

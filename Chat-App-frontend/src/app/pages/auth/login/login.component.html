@@ -1,0 +1,45 @@
+<div class="main-container">
+  <div class="header-container">
+    <span><img src="../../../../assets/Logo.png" alt="" /></span>
+  </div>
+  <div class="body-container">
+    <div class="login-container">
+      <div class="intro-text-container">
+        <span class="intro-span-one">Get started with</span>
+        <span class="intro-span-two">Collaboration</span>
+        <span class="intro-span-three">Networking</span>
+        <span class="intro-span-four">Platform</span>
+      </div>
+      <div class="login-form-container">
+        <form (ngSubmit)="login()" [formGroup]="loginForm" class="login-form">
+          <input
+            class="login-input"
+            type="text"
+            placeholder="Enter your username"
+            formControlName="username"
+            appNoSpace
+          />
+          <button class="login-button">
+            <span style="margin: 10px; font-size: 12px">Log-in</span>
+          </button>
+        </form>
+        <span style="margin-bottom: 20px">or</span>
+        <button class="google-login-container">
+          <div style="margin: 10px">
+            <i class="fa-brands fa-google" style="margin-right: 8px"></i>
+            <span>Log-in with google</span>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+    class="image-container"
+    >
+      <img
+        src="../../../../assets/LoginBG.jpeg"
+        alt=""
+        style="width: 70%; height: auto"
+      />
+    </div>
+  </div>
+</div>
