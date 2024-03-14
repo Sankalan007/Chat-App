@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../model/User';
+import { socketBackendEnv } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private baseUrl = 'http://localhost:3001';
+  private baseUrl = `${socketBackendEnv.hostname}:${socketBackendEnv.port}`;
 
   private userDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null

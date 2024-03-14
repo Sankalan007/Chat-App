@@ -4,6 +4,87 @@ const { v4: uuidv4 } = require("uuid");
 const http = require("http");
 const dotenv = require("dotenv").config();
 
+// Kafka configs
+
+const { Kafka } = require("kafkajs");
+const { Partitioners } = require("kafkajs");
+
+const kafka = new Kafka({
+  clientId: "chat-app",
+  brokers: ["localhost:9092"],
+});
+
+const producer = kafka.producer({
+  createPartitioner: Partitioners.LegacyPartitioner,
+});
+const consumer = kafka.consumer({ groupId: "my-group" });
+
+const run = async () => {
+  await producer.connect();
+  await consumer.connect();
+};
+
+const admin = kafka.admin();
+
+const createTopic = async (topicName) => {
+  try {
+    await admin.connect();
+
+    const existingTopics = await admin.listTopics();
+    if (existingTopics.includes(topicName)) {
+      return;
+    }
+
+    await admin.createTopics({
+      topics: [
+        {
+          topic: topicName,
+          numPartitions: 3,
+          replicationFactor: 1,
+        },
+      ],
+    });
+
+    console.log("Topic created successfully");
+  } catch (error) {
+    console.error("Error creating topic:", error);
+  } finally {
+    await admin.disconnect();
+  }
+};
+
+async function listTopics() {
+  await admin.connect();
+  const topics = await admin.listTopics();
+  console.log("Topics:", topics);
+  await admin.disconnect();
+}
+
+const sendMessage = async (topic, message) => {
+  console.log(`Message send to ${topic}:`, message);
+  await producer.send({
+    topic,
+    messages: [{ value: JSON.stringify(message) }],
+  });
+};
+
+const subscribeToTopic = async (topic) => {
+  await consumer.subscribe({ topic });
+  await consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      console.log({
+        value: message.value.toString(),
+      });
+    },
+  });
+};
+
+run().catch(console.error);
+createTopic("login-events").catch(console.error);
+// listTopics().catch(console.error);
+
+// Kafka configs end here
+
 const app = express();
 app.use(cors());
 const server = http.Server(app);
@@ -12,6 +93,7 @@ const io = require("socket.io")(server, {
     origin: [
       "http://localhost:4200",
       "http://192.1.150.239:4200",
+      "http://192.168.84.84:4200",
       "http://192.168.251.84:4200",
     ],
   },
@@ -32,6 +114,11 @@ function generateUserId() {
 function generateRoomId() {
   const uuid = uuidv4().replace(/-/g, "");
   return uuid.substring(0, 12);
+}
+
+function generateMessageId() {
+  const uuid = uuidv4();
+  return uuid;
 }
 
 server.on("error", (e) => {
@@ -74,7 +161,7 @@ function handleDisconnect(socket) {
   }
 }
 
-function handleUpdateCurrentRoomId(currentUserId, userIdToChat) {
+function handleP2PCurrentRoomId(socket, currentUserId, userIdToChat) {
   const idx = rooms.findIndex(
     (room) => !room.isGroup && isP2PUsers(room, currentUserId, userIdToChat)
   );
@@ -83,24 +170,25 @@ function handleUpdateCurrentRoomId(currentUserId, userIdToChat) {
     const newRoom = {
       roomId: generateRoomId(),
       name: "",
+      description: "",
       createdAt: new Date(),
       isGroup: false,
       members: [],
       messages: [],
     };
 
-    currentUser = users.find((user) => user.userId == currentUserId);
-    userToChat = users.find((user) => user.userId == userIdToChat);
+    let currentUser = users.find((user) => user.userId == currentUserId);
+    let userToChat = users.find((user) => user.userId == userIdToChat);
 
-    newRoom.name = `${currentUser.username}-${userIdToChat.username}`;
+    newRoom.name = `${currentUser.username}-${userToChat.username}`;
 
     newRoom.members.push(currentUser);
-    newRoom.members.push(userIdToChat);
+    newRoom.members.push(userToChat);
 
     rooms.push(newRoom);
-    io.emit("update-room-id", newRoom);
+    socket.emit("update-current-room-id", newRoom);
   } else {
-    io.emit("update-room-id", rooms[idx]);
+    socket.emit("update-current-room-id", rooms[idx]);
   }
 }
 
@@ -116,19 +204,63 @@ function isP2PUsers(room, currentUserId, userIdToChat) {
   return false;
 }
 
-function updateUser(user){
+function updateUser(userToUpdate) {
   const existingUserIndex = users.findIndex(
-    (user) => user.userId === user.userId
+    (user) => user.userId === userToUpdate.userId
   );
-  if (existingUserIndex!== -1) {
-    users[existingUserIndex] = user;
+  if (existingUserIndex !== -1) {
+    users[existingUserIndex] = userToUpdate;
   }
+  io.emit("update-user", userToUpdate);
+}
+
+function getRoomInfo(socket, roomId) {
+  const room = rooms.find((r) => {
+    return r.roomId === roomId;
+  });
+  socket.emit("get-room-info", room);
+}
+
+function handleMessages(socket, senderId, roomId, content, isRead) {
+  const room = rooms.find((r) => {
+    return r.roomId === roomId;
+  });
+
+  const sender = users.find((u) => {
+    return u.userId === senderId;
+  });
+
+  const message = {
+    messageId: generateMessageId(),
+    senderId,
+    senderName: sender.username,
+    roomId,
+    content,
+    createdAt: new Date(),
+    isRead,
+  };
+
+  room.messages.push(message);
+
+  io.to(roomId).emit("message", message);
+}
+
+function distinctPrint(caption, object) {
+  console.log(
+    "\n\n\n\n\n\n\n\n------------------------------------------------------------------------------------------------"
+  );
+  console.log(caption, object);
+  console.log(
+    "------------------------------------------------------------------------------------------------\n\n\n\n\n\n\n\n"
+  );
 }
 
 io.on("connection", (socket) => {
   console.log("a user connected with socket id: " + socket.id);
+
   socket.on("login", (userData) => {
     handleLogin(socket, userData);
+    sendMessage("login-events", userData);
   });
 
   socket.on("disconnect", () => {
@@ -136,13 +268,25 @@ io.on("connection", (socket) => {
     handleDisconnect(socket);
   });
 
-  socket.on('update-user', (user) => {
-    updateUser(user);
-    io.emit("update-user");
-  })
+  socket.on("join", (roomId) => {
+    socket.join(roomId);
+  });
 
-  socket.on("update-current-room-id", (currentUserId, userIdToChat) => {
-    handleUpdateCurrentRoomId(currentUserId, userIdToChat);
+  socket.on("update-user", (user) => {
+    updateUser(user);
+  });
+
+  socket.on("update-current-room-id", ({ currentUserId, userIdToChat }) => {
+    handleP2PCurrentRoomId(socket, currentUserId, userIdToChat);
+  });
+
+  socket.on("get-room-info", (roomId) => {
+    distinctPrint("Users: ", users);
+    getRoomInfo(socket, roomId);
+  });
+
+  socket.on("message", ({ senderId, roomId, content, isRead }) => {
+    handleMessages(socket, senderId, roomId, content, isRead);
   });
 });
 

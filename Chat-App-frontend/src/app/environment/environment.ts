@@ -12,7 +12,7 @@ const environments = {
   sc_home: {
     ui: {
       hostname: 'http://192.168.251.84',
-      port: 4201,
+      port: 4200,
     },
     socket_backend: {
       hostname: 'http://192.168.251.84',
@@ -31,7 +31,7 @@ const environments = {
   },
 };
 
-const profile = 'localhost';
+const profile = 'work';
 
 const UIEnv = environments[profile].ui;
 const socketBackendEnv = environments[profile].socket_backend;

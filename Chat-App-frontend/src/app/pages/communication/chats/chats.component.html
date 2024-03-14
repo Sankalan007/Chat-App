@@ -1,12 +1,31 @@
-<div class="main-container">
+<div
+  class="main-container"
+  [style.justify-content]="
+    roomInfo === undefined || roomInfo === null ? 'center' : null
+  "
+  [style.align-items]="
+    roomInfo === undefined || roomInfo === null ? 'center' : null
+  "
+>
+  @if(roomInfo === undefined || roomInfo === null){
+  Click a user to start chatting } @else {
   <div class="main-container-wrapper">
     <div class="chat-main-container">
       <div class="chat-main-container-wrapper">
         <div class="chat-header-container">
           <div class="chat-header-info">
-            <div class="chat-title">general</div>
+            <div class="chat-title">
+              @if (roomInfo?.isGroup) {{{roomInfo?.name}}} @else
+              {@if(roomInfo?.members[0].userId === loggedInUser.userId){
+              {{ roomInfo?.members[1].username }}
+              } @else {
+              {{ roomInfo?.members[0].username }}
+              }}
+            </div>
             <div class="chat-description">
-              In this channel we discuss everything related to the organization
+              @if(roomInfo?.isGroup){
+              {{ roomInfo?.description }}
+              } @else {}
             </div>
           </div>
           <div class="chat-header-actions">
@@ -18,25 +37,8 @@
           </div>
         </div>
         <div class="chat-message-container">
-          <div class="left-message-container">
-            <div class="circle avatar-container">
-              <img
-                src="https://source.unsplash.com/random/200x200?avatar,men"
-                alt="avatar"
-                width="35"
-                height="35"
-              />
-            </div>
-            <div class="message-detail-container">
-              <div class="message-info-container">
-                <span class="message-sender">John Doe</span
-                ><span class="message-time">9:30</span>
-              </div>
-              <div class="message-text">
-                <span>Hi, there</span>
-              </div>
-            </div>
-          </div>
+          @for (message of roomInfo?.messages; track $index) { @if
+          (message.senderId === loggedInUser.userId) {
           <div class="right-message-container">
             <div class="circle avatar-container">
               <img
@@ -48,26 +50,57 @@
             </div>
             <div class="message-detail-container">
               <div class="message-info-container">
-                <span class="message-sender">Jane Doe</span
-                ><span class="message-time">9:31</span>
+                <span class="message-sender">You</span
+                ><span class="message-time">{{
+                  formatDate(message.createdAt)
+                }}</span>
               </div>
-              <div class="message-text">Hello</div>
+              <div class="message-text">{{ message.content }}</div>
             </div>
           </div>
+          } @else {
+          <div class="left-message-container">
+            <div class="circle avatar-container">
+              <img
+                src="https://source.unsplash.com/random/200x200?avatar,men"
+                alt="avatar"
+                width="35"
+                height="35"
+              />
+            </div>
+            <div class="message-detail-container">
+              <div class="message-info-container">
+                <span class="message-sender">{{ message.senderName }}</span
+                ><span class="message-time">{{
+                  formatDate(message.createdAt)
+                }}</span>
+              </div>
+              <div class="message-text">
+                <span>{{ message.content }}</span>
+              </div>
+            </div>
+          </div>
+
+          } }
         </div>
         <div class="chat-input-container">
           <div class="chat-input-wrapper">
             <div class="file-input-container">
               <span style="font-size: 28px">+</span>
             </div>
-            <div class="message-text-input-container">
+            <form
+              [formGroup]="messageForm"
+              (ngSubmit)="sendMessage()"
+              class="message-text-input-container"
+            >
               <input
                 type="text"
                 class="message-text-input"
                 placeholder="Type message here"
+                formControlName="message"
               />
               <button class="send-button">Send</button>
-            </div>
+            </form>
             <div class="chat-action-button">
               <span><i class="fa-solid fa-microphone"></i></span>
             </div>
@@ -99,4 +132,5 @@
       </div>
     </div>
   </div>
+  }
 </div>

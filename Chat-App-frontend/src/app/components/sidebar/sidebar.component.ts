@@ -14,6 +14,9 @@ import { SharedDataService } from '../../services/shared-data/shared-data.servic
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   loggedInUsersSubscription: Subscription;
+  updateCurrentUserSubscription: Subscription;
+  getUsersSubscription: Subscription;
+
   currentUser: User;
   otherUsers: User[];
 
@@ -45,29 +48,41 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
       );
 
-    this.userService.getUsers().subscribe((users) => {
-      this.allUsers = users;
-      this.otherUsers = this.allUsers.filter(
-        (user) => user.username !== this.currentUser.username
-      );
-    });
+    this.userService
+      .getUsers()
+      .subscribe((users) => {
+        console.log(users);
+        
+        this.allUsers = users;
+        this.otherUsers = this.allUsers.filter(
+          (user) => user?.username !== this.currentUser?.username
+        );
+      });
   }
 
   updateCurrentRoomId(userIdToChat: string) {
-    this.socketService.emitEvent('update-room-id', {
+    if (this.updateCurrentUserSubscription) {
+      this.updateCurrentUserSubscription.unsubscribe();
+    }
+
+    this.socketService.emitEvent('update-current-room-id', {
       currentUserId: this.currentUser.userId,
       userIdToChat: userIdToChat,
     });
-    this.socketService.onEvent('update-room-id').subscribe((data) => {
-      console.log(data);
-      this.currentRoomId = data.roomId;
-      this.sharedDataService.setCurrentRoomId(data.roomId);
-      this.currentUser.currentRoomId = data.roomId;
-      this.socketService.emitEvent('update-user', this.currentUser);
-    });
+    this.updateCurrentUserSubscription = this.socketService
+      .onEvent('update-current-room-id')
+      .subscribe((data) => {
+        console.log(data);
+        this.currentRoomId = data.roomId;
+        this.sharedDataService.setCurrentRoomId(data.roomId);
+        this.currentUser.currentRoomId = data.roomId;
+        this.socketService.joinRoom(this.currentRoomId);
+        this.socketService.emitEvent('update-user', this.currentUser);
+      });
   }
 
   ngOnDestroy(): void {
-    this.loggedInUsersSubscription.unsubscribe();
+    this.loggedInUsersSubscription?.unsubscribe();
+    this.updateCurrentUserSubscription?.unsubscribe();
   }
 }

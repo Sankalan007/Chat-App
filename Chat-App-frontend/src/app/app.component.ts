@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { ChannelBarComponent } from './components/channel-bar/channel-bar.component';
@@ -19,13 +19,38 @@ import { HeaderComponent } from './components/header/header.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  title = 'Chat App';
+  private broadcastChannel: BroadcastChannel;
+  private readonly CHANNEL_NAME = 'tabTrackChannel';
+
+  anotherTabOpened: boolean = false;
+
   constructor(private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setupBroadcastChannel();
+  }
 
   ngAfterViewInit(): void {
     this.setupDraggableDivider();
+
+    if (localStorage.getItem('firstTab') === null) {
+      localStorage.setItem('firstTab', 'true');
+    } else {
+      this.broadcastChannel.postMessage('newTabOpened');
+    }
+  }
+
+  private setupBroadcastChannel(): void {
+    this.broadcastChannel = new BroadcastChannel(this.CHANNEL_NAME);
+    this.broadcastChannel.onmessage = (event) => {
+      if (event.data === 'newTabOpened') {
+        this.anotherTabOpened = true;
+      }
+    };
+  }
+
+  openTab(){
+    window.location.reload();
   }
 
   isNoNavRoute() {
@@ -85,5 +110,12 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  ngOnDestroy(): void {
+    if (this.broadcastChannel) {
+      this.broadcastChannel.close();
+    }
   }
 }

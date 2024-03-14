@@ -78,15 +78,23 @@
           <span class="ball"></span>
         </label>
       </div>
-      <div class="dropDown">
-        <button
-          (click)="dropdownToggle()"
+      <div class="dropDown" (click)="dropdownToggle()">
+        <div
           class="dropbtn"
-          style="display: flex; flex-direction: row; align-items: center; color: black"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            color: black;
+          "
         >
-          <div (click)="dropdownToggle()" style="margin-right: 15px" class="circle">
-            <img
+          <div
             (click)="dropdownToggle()"
+            style="margin-right: 15px"
+            class="circle"
+          >
+            <img
+              (click)="dropdownToggle()"
               height="35"
               width="35"
               src="https://source.unsplash.com/random/200x200?avatar"
@@ -94,9 +102,9 @@
             />
           </div>
           <div (click)="dropdownToggle()" style="margin-right: 20px">
-            <span>{{currentUser?.username}}</span>
+            <span>{{ currentUser?.username }}</span>
           </div>
-        </button>
+        </div>
         <div id="myDropdown" class="dropdown-content">
           <button (click)="logout()">Logout</button>
         </div>

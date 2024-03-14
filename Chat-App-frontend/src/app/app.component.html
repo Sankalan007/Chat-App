@@ -1,4 +1,33 @@
-@if (isNoNavRoute()) {
+@if (anotherTabOpened) {
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    transition: all 0.5s ease-out;
+    font-size: 24px;
+    font-family: 'Montserrat', sans-serif;
+  "
+>
+  <span>Meghdoot is running in another tab</span>
+  <div
+    style="
+      background-color: black;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
+    "
+    (click)="openTab()"
+  >
+    Open here
+  </div>
+</div>
+} @else { @if (isNoNavRoute()) {
 <router-outlet></router-outlet>
 } @else {
 <div
@@ -39,4 +68,4 @@
   </div>
 </div>
 
-}
+} }

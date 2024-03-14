@@ -1,10 +1,10 @@
 #draggable {
-  width: 3px;
+  width: 2px;
   cursor: ew-resize;
   background-color: #ccc;
 }
-#draggable:hover{
-    background-color: rgb(57, 57, 173);
+#draggable:hover {
+  background-color: rgb(57, 57, 173);
 }
 
 #sidebar-container,

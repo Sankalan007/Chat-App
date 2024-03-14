@@ -17,6 +17,10 @@ export class SocketService {
     });
   }
 
+  joinRoom(roomId: string){
+    this.socket.emit('join', roomId);
+  }
+
   onEvent(event: string): Observable<any> {
     return new Observable<any>((observer) => {
       this.socket.on(event, (data) => {

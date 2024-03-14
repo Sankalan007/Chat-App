@@ -33,7 +33,7 @@
                 <span>Threads</span></span
               >
             </div>
-            <div style="font-weight: bold; min-height: 8%; overflow-y: auto;">
+            <div style="font-weight: bold; min-height: 8%; overflow-y: auto">
               <span class="cursor-pointer"
                 ><span class="mr-10"><i class="fa-solid fa-star"></i></span>
                 <span class="mr-10">Starred</span
@@ -93,7 +93,9 @@
               </div>
             </div>
             <div class="broadcast-container">
-              <div style="margin-bottom: 8px; font-weight: bold; cursor: pointer">
+              <div
+                style="margin-bottom: 8px; font-weight: bold; cursor: pointer"
+              >
                 <span
                   ><span class="mr-10"><i class="fa-solid fa-users"></i></span>
                   <span class="mr-10">Broadcast Channel</span
@@ -119,7 +121,7 @@
               </div>
               <div class="dm-content-container">
                 @for(user of otherUsers; track user){
-                <button class="dm-info" (click)="updateCurrentRoomId(user.userId)">
+                <div class="dm-info" (click)="updateCurrentRoomId(user.userId)">
                   <div class="dm-user-info">
                     <div class="circle">
                       <img
@@ -130,7 +132,9 @@
                         alt=""
                       />
                     </div>
-                    <div>{{ user.username }}</div>
+                    <div style="word-break: break-word">
+                      {{ user.username }}
+                    </div>
                   </div>
                   <span>
                     @if(user.onlineStatus == true){
@@ -139,7 +143,7 @@
                     <div class="status-offline"></div>
                     }
                   </span>
-                </button>
+                </div>
                 }
               </div>
             </div>
