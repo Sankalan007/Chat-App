@@ -41,7 +41,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
       message: ['', Validators.required],
     });
 
+    
     this.loggedInUser = JSON.parse(localStorage.getItem('userData'));
+    
     this.handleWindowLoad();
 
     if (this.currentRoomIdSubscription)
@@ -52,6 +54,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this.currentRoomIdSubscription =
       this.sharedDataService.currentRoomId.subscribe((data) => {
         this.currentRoomId = data;
+
+        this.socketService.joinRoom(this.currentRoomId);
 
         this.socketService.emitEvent('get-room-info', this.currentRoomId);
         if (this.roomInfoSubscription) this.roomInfoSubscription.unsubscribe();
@@ -87,36 +91,30 @@ export class ChatsComponent implements OnInit, OnDestroy {
     const currentDate = new Date();
     const createdDate = new Date(createdAt);
 
-    // Check if the date is today
     if (createdDate.toDateString() === currentDate.toDateString()) {
-      // Format time as hh:mm AM/PM
-      const hours = createdDate.getHours() % 12 || 12; // Convert to 12-hour format
+      const hours = createdDate.getHours() % 12 || 12;
       const minutes = String(createdDate.getMinutes()).padStart(2, '0');
       const ampm = createdDate.getHours() >= 12 ? 'PM' : 'AM';
       return `${hours}:${minutes} ${ampm}`;
     }
 
-    // Get yesterday's date
     const yesterdayDate = new Date(currentDate);
     yesterdayDate.setDate(currentDate.getDate() - 1);
 
-    // Check if the date is yesterday
     if (createdDate.toDateString() === yesterdayDate.toDateString()) {
-      // Format time as hh:mm AM/PM and date as "Yesterday"
-      const hours = createdDate.getHours() % 12 || 12; // Convert to 12-hour format
+      const hours = createdDate.getHours() % 12 || 12;
       const minutes = String(createdDate.getMinutes()).padStart(2, '0');
       const ampm = createdDate.getHours() >= 12 ? 'PM' : 'AM';
       return `Yesterday, ${hours}:${minutes} ${ampm}`;
     }
 
-    // Format date as "date, hh:mm AM/PM"
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
     };
     const formattedDate = createdDate.toLocaleDateString(undefined, options);
-    const hours = createdDate.getHours() % 12 || 12; // Convert to 12-hour format
+    const hours = createdDate.getHours() % 12 || 12;
     const minutes = String(createdDate.getMinutes()).padStart(2, '0');
     const ampm = createdDate.getHours() >= 12 ? 'PM' : 'AM';
     return `${formattedDate}, ${hours}:${minutes} ${ampm}`;

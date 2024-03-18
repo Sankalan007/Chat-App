@@ -7,81 +7,85 @@
     roomInfo === undefined || roomInfo === null ? 'center' : null
   "
 >
-  @if(roomInfo === undefined || roomInfo === null){
-  Click a user to start chatting } @else {
+  @if(roomInfo === undefined || roomInfo === null){ Click a user to start
+  chatting } @else {
   <div class="main-container-wrapper">
     <div class="chat-main-container">
       <div class="chat-main-container-wrapper">
         <div class="chat-header-container">
-          <div class="chat-header-info">
-            <div class="chat-title">
-              @if (roomInfo?.isGroup) {{{roomInfo?.name}}} @else
-              {@if(roomInfo?.members[0].userId === loggedInUser.userId){
-              {{ roomInfo?.members[1].username }}
-              } @else {
-              {{ roomInfo?.members[0].username }}
-              }}
+          <div class="chat-header-wrapper">
+            <div class="chat-header-info">
+              <div class="chat-title">
+                @if (roomInfo?.isGroup) {{{roomInfo?.name}}} @else
+                {@if(roomInfo?.members[0].userId === loggedInUser.userId){
+                {{ roomInfo?.members[1].username }}
+                } @else {
+                {{ roomInfo?.members[0].username }}
+                }}
+              </div>
+              <div class="chat-description">
+                @if(roomInfo?.isGroup){
+                {{ roomInfo?.description }}
+                } @else {}
+              </div>
             </div>
-            <div class="chat-description">
-              @if(roomInfo?.isGroup){
-              {{ roomInfo?.description }}
-              } @else {}
+            <div class="chat-header-actions">
+              <span class="mr-20"><i class="fa-solid fa-video"></i></span>
+              <span class="mr-20"><i class="fa-solid fa-phone"></i></span>
+              <span class="mr-10"
+                ><i class="fa-solid fa-ellipsis-vertical"></i
+              ></span>
             </div>
-          </div>
-          <div class="chat-header-actions">
-            <span class="mr-20"><i class="fa-solid fa-video"></i></span>
-            <span class="mr-20"><i class="fa-solid fa-phone"></i></span>
-            <span class="mr-10"
-              ><i class="fa-solid fa-ellipsis-vertical"></i
-            ></span>
           </div>
         </div>
         <div class="chat-message-container">
-          @for (message of roomInfo?.messages; track $index) { @if
-          (message.senderId === loggedInUser.userId) {
-          <div class="right-message-container">
-            <div class="circle avatar-container">
-              <img
-                src="https://source.unsplash.com/random/200x200?avatar,women"
-                alt=""
-                width="35"
-                height="35"
-              />
-            </div>
-            <div class="message-detail-container">
-              <div class="message-info-container">
-                <span class="message-sender">You</span
-                ><span class="message-time">{{
-                  formatDate(message.createdAt)
-                }}</span>
+          <div class="chat-message-wrapper">
+            @for (message of roomInfo?.messages; track $index) { @if
+              (message.senderId === loggedInUser.userId) {
+              <div class="right-message-container">
+                <div class="circle avatar-container">
+                  <img
+                    src="https://source.unsplash.com/random/200x200?avatar,women"
+                    alt=""
+                    width="35"
+                    height="35"
+                  />
+                </div>
+                <div class="message-detail-container">
+                  <div class="message-info-container">
+                    <span class="message-sender">You</span
+                    ><span class="message-time">{{
+                      formatDate(message.createdAt)
+                    }}</span>
+                  </div>
+                  <div class="message-text"><span class="m-3">{{ message.content }}</span></div>
+                </div>
               </div>
-              <div class="message-text">{{ message.content }}</div>
-            </div>
+              } @else {
+              <div class="left-message-container">
+                <div class="circle avatar-container">
+                  <img
+                    src="https://source.unsplash.com/random/200x200?avatar,men"
+                    alt="avatar"
+                    width="35"
+                    height="35"
+                  />
+                </div>
+                <div class="message-detail-container">
+                  <div class="message-info-container">
+                    <span class="message-sender">{{ message.senderName }}</span
+                    ><span class="message-time">{{
+                      formatDate(message.createdAt)
+                    }}</span>
+                  </div>
+                  <div class="message-text">
+                    <span>{{ message.content }}</span>
+                  </div>
+                </div>
+              </div>
+    
+              } }
           </div>
-          } @else {
-          <div class="left-message-container">
-            <div class="circle avatar-container">
-              <img
-                src="https://source.unsplash.com/random/200x200?avatar,men"
-                alt="avatar"
-                width="35"
-                height="35"
-              />
-            </div>
-            <div class="message-detail-container">
-              <div class="message-info-container">
-                <span class="message-sender">{{ message.senderName }}</span
-                ><span class="message-time">{{
-                  formatDate(message.createdAt)
-                }}</span>
-              </div>
-              <div class="message-text">
-                <span>{{ message.content }}</span>
-              </div>
-            </div>
-          </div>
-
-          } }
         </div>
         <div class="chat-input-container">
           <div class="chat-input-wrapper">
@@ -93,13 +97,17 @@
               (ngSubmit)="sendMessage()"
               class="message-text-input-container"
             >
-              <input
-                type="text"
-                class="message-text-input"
-                placeholder="Type message here"
-                formControlName="message"
-              />
-              <button class="send-button">Send</button>
+              <div class="message-text-input-wrapper">
+                <input
+                  type="text"
+                  class="message-text-input m-10"
+                  placeholder="Type message here"
+                  formControlName="message"
+                />
+              </div>
+              <button class="send-button m-10 p-10">
+                <span>Send</span>
+              </button>
             </form>
             <div class="chat-action-button">
               <span><i class="fa-solid fa-microphone"></i></span>

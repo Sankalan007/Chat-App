@@ -31,7 +31,7 @@ const environments = {
   },
 };
 
-const profile = 'work';
+const profile = 'sc_home';
 
 const UIEnv = environments[profile].ui;
 const socketBackendEnv = environments[profile].socket_backend;
